@@ -1,0 +1,1171 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Bank — Analiza bancară din Moldova prin Inteligență Artificială</title>
+<meta name="description" content="Date live BNM.md — Capital bancar, Curs valutar, Comunicate, Noutăți. Analiză AI pentru sistemul bancar din Republica Moldova.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Serif+Display&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #0B1929;
+    --navy-mid: #0F2744;
+    --navy-light: #163352;
+    --blue: #1A5FA8;
+    --blue-bright: #2176CC;
+    --blue-accent: #3B9EE0;
+    --teal: #0D9E8A;
+    --teal-light: #12C4AC;
+    --white: #F0F6FF;
+    --white-dim: rgba(240,246,255,0.75);
+    --white-muted: rgba(240,246,255,0.4);
+    --white-faint: rgba(240,246,255,0.1);
+    --white-ultra: rgba(240,246,255,0.05);
+    --border: rgba(59,158,224,0.2);
+    --border-bright: rgba(59,158,224,0.45);
+    --gold: #C9A84C;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--navy);
+    color: var(--white);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* BACKGROUND TEXTURE */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 80% 50% at 20% 20%, rgba(26,95,168,0.18) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 40% at 80% 80%, rgba(13,158,138,0.12) 0%, transparent 60%),
+      radial-gradient(ellipse 40% 60% at 50% 0%, rgba(33,118,204,0.1) 0%, transparent 50%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    background: rgba(11,25,41,0.92);
+    backdrop-filter: blur(16px);
+    border-bottom: 0.5px solid var(--border);
+  }
+
+  .nav-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 2rem;
+    height: 58px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+
+  .nav-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+    flex-shrink: 0;
+  }
+
+  .logo-mark {
+    width: 34px;
+    height: 34px;
+    border-radius: 8px;
+    background: linear-gradient(135deg, var(--blue-bright), var(--teal));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 600;
+    color: white;
+    letter-spacing: -0.5px;
+  }
+
+  .logo-text {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--white);
+    letter-spacing: -0.3px;
+  }
+
+  .logo-text span {
+    color: var(--blue-accent);
+  }
+
+  /* NAV LINKS - like bancamea.md top bar */
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    flex: 1;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .nav-links::-webkit-scrollbar { display: none; }
+
+  .nav-link {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding: 0 14px;
+    height: 58px;
+    font-size: 12.5px;
+    font-weight: 500;
+    color: var(--white-dim);
+    text-decoration: none;
+    border-bottom: 2px solid transparent;
+    transition: all 0.2s;
+    white-space: nowrap;
+    position: relative;
+  }
+
+  .nav-link:hover,
+  .nav-link.active {
+    color: var(--white);
+    border-bottom-color: var(--blue-accent);
+  }
+
+  .nav-link .dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--teal-light);
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+
+  .nav-link.active .dot { opacity: 1; }
+
+  .nav-cta {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 18px;
+    background: var(--blue-bright);
+    color: white;
+    text-decoration: none;
+    border-radius: 7px;
+    font-size: 12.5px;
+    font-weight: 500;
+    white-space: nowrap;
+    transition: background 0.2s;
+    flex-shrink: 0;
+  }
+
+  .nav-cta:hover { background: var(--blue-accent); }
+
+  /* HERO */
+  .hero {
+    position: relative;
+    z-index: 1;
+    padding: 140px 2rem 80px;
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: center;
+  }
+
+  .hero-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--teal-light);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+    padding: 5px 12px;
+    border: 0.5px solid rgba(13,158,138,0.4);
+    border-radius: 20px;
+    background: rgba(13,158,138,0.08);
+  }
+
+  .hero-eyebrow::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--teal-light);
+    animation: pulse 2s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(0.8); }
+  }
+
+  .hero h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(32px, 4vw, 52px);
+    line-height: 1.15;
+    color: var(--white);
+    margin-bottom: 20px;
+    letter-spacing: -0.5px;
+  }
+
+  .hero h1 em {
+    font-style: normal;
+    color: var(--blue-accent);
+  }
+
+  .hero-desc {
+    font-size: 15px;
+    line-height: 1.7;
+    color: var(--white-dim);
+    margin-bottom: 32px;
+    max-width: 480px;
+  }
+
+  .hero-actions {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 13px 24px;
+    background: var(--blue-bright);
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.2s;
+    border: none;
+    cursor: pointer;
+  }
+
+  .btn-primary:hover {
+    background: var(--blue-accent);
+    transform: translateY(-1px);
+  }
+
+  .btn-primary svg { width: 16px; height: 16px; }
+
+  .btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 13px 24px;
+    background: var(--white-faint);
+    color: var(--white-dim);
+    text-decoration: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    border: 0.5px solid var(--border-bright);
+    transition: all 0.2s;
+  }
+
+  .btn-secondary:hover {
+    background: var(--white-ultra);
+    color: var(--white);
+    border-color: var(--blue-accent);
+  }
+
+  /* HERO STATS */
+  .hero-stats {
+    display: flex;
+    gap: 24px;
+    margin-top: 40px;
+    padding-top: 32px;
+    border-top: 0.5px solid var(--border);
+  }
+
+  .stat { flex: 1; }
+
+  .stat-val {
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--white);
+    letter-spacing: -0.5px;
+    margin-bottom: 3px;
+  }
+
+  .stat-val span { color: var(--teal-light); }
+
+  .stat-label {
+    font-size: 11px;
+    color: var(--white-muted);
+    line-height: 1.4;
+  }
+
+  /* HERO CARD (right side) */
+  .hero-card {
+    background: var(--navy-mid);
+    border: 0.5px solid var(--border);
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 24px 80px rgba(0,0,0,0.4);
+    position: relative;
+  }
+
+  .hero-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--blue-bright), var(--teal-light));
+  }
+
+  .card-header {
+    padding: 16px 20px;
+    border-bottom: 0.5px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .card-title {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--white-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  .live-badge {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 10px;
+    font-weight: 500;
+    color: var(--teal-light);
+    background: rgba(13,158,138,0.12);
+    padding: 3px 8px;
+    border-radius: 10px;
+    border: 0.5px solid rgba(13,158,138,0.3);
+  }
+
+  .live-badge::before {
+    content: '';
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--teal-light);
+    animation: pulse 2s infinite;
+  }
+
+  .card-body { padding: 16px 20px; }
+
+  .rate-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 0.5px solid var(--white-ultra);
+    font-size: 13px;
+  }
+
+  .rate-row:last-child { border-bottom: none; }
+
+  .rate-currency {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--white-dim);
+  }
+
+  .currency-flag {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: var(--navy-light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+  }
+
+  .rate-val { font-weight: 600; color: var(--white); }
+  .rate-change { font-size: 11px; }
+  .rate-change.up { color: var(--teal-light); }
+  .rate-change.down { color: #E05252; }
+
+  .card-chart {
+    padding: 16px 20px;
+    border-top: 0.5px solid var(--border);
+  }
+
+  .chart-label {
+    font-size: 11px;
+    color: var(--white-muted);
+    margin-bottom: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  .mini-chart {
+    height: 50px;
+    display: flex;
+    align-items: flex-end;
+    gap: 3px;
+  }
+
+  .chart-bar {
+    flex: 1;
+    border-radius: 2px 2px 0 0;
+    background: var(--blue-bright);
+    opacity: 0.6;
+    transition: opacity 0.2s;
+  }
+
+  .chart-bar:hover { opacity: 1; }
+  .chart-bar.highlight { background: var(--teal-light); opacity: 0.9; }
+
+  /* SECTION */
+  section {
+    position: relative;
+    z-index: 1;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 80px 2rem;
+  }
+
+  .section-label {
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--blue-accent);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+
+  .section-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(24px, 3vw, 36px);
+    color: var(--white);
+    margin-bottom: 14px;
+    letter-spacing: -0.3px;
+    line-height: 1.2;
+  }
+
+  .section-desc {
+    font-size: 14px;
+    color: var(--white-muted);
+    max-width: 520px;
+    line-height: 1.7;
+    margin-bottom: 48px;
+  }
+
+  /* FEATURES GRID */
+  .features-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
+
+  .feature-card {
+    background: var(--navy-mid);
+    border: 0.5px solid var(--border);
+    border-radius: 12px;
+    padding: 24px;
+    transition: all 0.25s;
+    cursor: pointer;
+    text-decoration: none;
+    display: block;
+  }
+
+  .feature-card:hover {
+    border-color: var(--border-bright);
+    transform: translateY(-3px);
+    background: var(--navy-light);
+  }
+
+  .feature-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    background: var(--white-faint);
+    border: 0.5px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    margin-bottom: 16px;
+  }
+
+  .feature-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--white);
+    margin-bottom: 6px;
+    letter-spacing: -0.2px;
+  }
+
+  .feature-desc {
+    font-size: 12.5px;
+    color: var(--white-muted);
+    line-height: 1.6;
+  }
+
+  .feature-tag {
+    display: inline-block;
+    font-size: 10px;
+    padding: 3px 8px;
+    border-radius: 10px;
+    margin-top: 12px;
+    font-weight: 500;
+  }
+
+  .tag-blue { background: rgba(33,118,204,0.15); color: var(--blue-accent); border: 0.5px solid rgba(33,118,204,0.3); }
+  .tag-teal { background: rgba(13,158,138,0.12); color: var(--teal-light); border: 0.5px solid rgba(13,158,138,0.3); }
+  .tag-gold { background: rgba(201,168,76,0.12); color: var(--gold); border: 0.5px solid rgba(201,168,76,0.25); }
+
+  /* BANKS SECTION */
+  .banks-section {
+    background: var(--navy-mid);
+    border-top: 0.5px solid var(--border);
+    border-bottom: 0.5px solid var(--border);
+    padding: 60px 2rem;
+    position: relative;
+    z-index: 1;
+  }
+
+  .banks-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .banks-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 12px;
+    margin-top: 36px;
+  }
+
+  .bank-chip {
+    background: var(--navy);
+    border: 0.5px solid var(--border);
+    border-radius: 8px;
+    padding: 14px 12px;
+    text-align: center;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--white-dim);
+    transition: all 0.2s;
+    cursor: pointer;
+    text-decoration: none;
+    display: block;
+  }
+
+  .bank-chip:hover {
+    border-color: var(--border-bright);
+    color: var(--white);
+    background: var(--navy-light);
+  }
+
+  .bank-chip .bank-abbr {
+    display: block;
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--blue-accent);
+    margin-bottom: 4px;
+    letter-spacing: -0.5px;
+  }
+
+  /* DATA SECTION */
+  .data-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+
+  .data-card {
+    background: var(--navy-mid);
+    border: 0.5px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+
+  .data-card-header {
+    padding: 14px 20px;
+    border-bottom: 0.5px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: var(--white-ultra);
+  }
+
+  .data-card-title {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--white);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .data-card-title::before {
+    content: '';
+    width: 3px;
+    height: 14px;
+    border-radius: 2px;
+    background: var(--blue-accent);
+  }
+
+  .data-card-body { padding: 16px 20px; }
+
+  .data-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 0.5px solid var(--white-ultra);
+    font-size: 12.5px;
+  }
+
+  .data-row:last-child { border-bottom: none; }
+  .data-key { color: var(--white-muted); }
+  .data-val { font-weight: 500; color: var(--white); }
+  .data-val.blue { color: var(--blue-accent); }
+  .data-val.teal { color: var(--teal-light); }
+  .data-val.gold { color: var(--gold); }
+
+  /* CTA SECTION */
+  .cta-section {
+    position: relative;
+    z-index: 1;
+    padding: 80px 2rem;
+  }
+
+  .cta-box {
+    max-width: 1200px;
+    margin: 0 auto;
+    background: var(--navy-mid);
+    border: 0.5px solid var(--border-bright);
+    border-radius: 20px;
+    padding: 64px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .cta-box::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--blue-bright), var(--teal-light), transparent);
+  }
+
+  .cta-box::after {
+    content: '';
+    position: absolute;
+    bottom: -80px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 400px;
+    height: 200px;
+    background: radial-gradient(ellipse, rgba(26,95,168,0.25) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .cta-box h2 {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(26px, 3vw, 40px);
+    color: var(--white);
+    margin-bottom: 14px;
+    letter-spacing: -0.5px;
+  }
+
+  .cta-box p {
+    font-size: 15px;
+    color: var(--white-dim);
+    margin-bottom: 32px;
+    line-height: 1.6;
+    max-width: 480px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .cta-actions {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  /* FOOTER */
+  footer {
+    position: relative;
+    z-index: 1;
+    border-top: 0.5px solid var(--border);
+    padding: 32px 2rem;
+  }
+
+  .footer-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+
+  .footer-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 13px;
+    color: var(--white-muted);
+  }
+
+  .footer-links {
+    display: flex;
+    gap: 20px;
+  }
+
+  .footer-link {
+    font-size: 12px;
+    color: var(--white-muted);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .footer-link:hover { color: var(--blue-accent); }
+
+  .footer-bnm {
+    font-size: 11px;
+    color: var(--white-muted);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .footer-bnm::before {
+    content: '';
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--teal-light);
+    animation: pulse 2s infinite;
+  }
+
+  /* DIVIDER */
+  .divider {
+    max-width: 1200px;
+    margin: 0 auto;
+    height: 0.5px;
+    background: var(--border);
+  }
+
+  /* SCROLL ANIMATIONS */
+  .fade-in {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+
+  .fade-in.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* RESPONSIVE */
+  @media (max-width: 900px) {
+    .hero { grid-template-columns: 1fr; padding-top: 100px; }
+    .hero-card { display: none; }
+    .features-grid { grid-template-columns: 1fr 1fr; }
+    .banks-grid { grid-template-columns: repeat(3, 1fr); }
+    .data-grid { grid-template-columns: 1fr; }
+    .cta-box { padding: 40px 24px; }
+    .nav-links { display: none; }
+  }
+
+  @media (max-width: 600px) {
+    .features-grid { grid-template-columns: 1fr; }
+    .banks-grid { grid-template-columns: repeat(2, 1fr); }
+    .hero-stats { flex-wrap: wrap; gap: 16px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAVIGATION -->
+<nav>
+  <div class="nav-inner">
+    <a href="#" class="nav-logo">
+      <div class="logo-mark">AI</div>
+      <span class="logo-text">AI <span>Bank</span></span>
+    </a>
+
+    <div class="nav-links">
+      <a href="#curs-valutar" class="nav-link active">
+        <span class="dot"></span>
+        Curs valutar
+      </a>
+      <a href="#capital-bancar" class="nav-link">Capital bancar</a>
+      <a href="#comunicate" class="nav-link">Comunicate</a>
+      <a href="#noutati" class="nav-link">Noutăți</a>
+      <a href="#banci" class="nav-link">Bănci supravegheate</a>
+      <a href="#asigurari" class="nav-link">Asigurări</a>
+      <a href="#altele" class="nav-link">Altele</a>
+    </div>
+
+    <a href="https://ai-bank.streamlit.app" target="_blank" class="nav-cta">
+      <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" width="14" height="14">
+        <path d="M8 2L14 8L8 14M14 8H2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      Deschide aplicația
+    </a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-content fade-in">
+    <div class="hero-eyebrow">Date live · BNM.md · Moldova</div>
+    <h1>Analiza bancară<br>din Moldova prin<br><em>Inteligență Artificială</em></h1>
+    <p class="hero-desc">
+      Date în timp real de la Banca Națională a Moldovei — capital bancar, curs valutar, comunicate oficiale și noutăți. Totul analizat și vizualizat cu AI pentru profesioniști financiari și antreprenori.
+    </p>
+    <div class="hero-actions">
+      <a href="https://ai-bank.streamlit.app" target="_blank" class="btn-primary">
+        <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" width="16" height="16">
+          <path d="M8 2L14 8L8 14M14 8H2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        Deschide aplicația
+      </a>
+      <a href="#despre" class="btn-secondary">Află mai multe</a>
+    </div>
+    <div class="hero-stats">
+      <div class="stat">
+        <div class="stat-val">10<span>+</span></div>
+        <div class="stat-label">Bănci comerciale<br>monitorizate</div>
+      </div>
+      <div class="stat">
+        <div class="stat-val"><span>Live</span></div>
+        <div class="stat-label">Date actualizate<br>de la BNM.md</div>
+      </div>
+      <div class="stat">
+        <div class="stat-val">AI<span>+</span></div>
+        <div class="stat-label">Analiză automată<br>& vizualizări</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- HERO CARD -->
+  <div class="hero-card fade-in" style="transition-delay: 0.15s">
+    <div class="card-header">
+      <div class="card-title">Curs valutar BNM</div>
+      <div class="live-badge">Live</div>
+    </div>
+    <div class="card-body">
+      <div class="rate-row">
+        <div class="rate-currency">
+          <div class="currency-flag">€</div>
+          <span>EUR / MDL</span>
+        </div>
+        <div style="display:flex; gap:14px; align-items:center">
+          <div class="rate-val">20.1269</div>
+          <div class="rate-change up">+0.04%</div>
+        </div>
+      </div>
+      <div class="rate-row">
+        <div class="rate-currency">
+          <div class="currency-flag">$</div>
+          <span>USD / MDL</span>
+        </div>
+        <div style="display:flex; gap:14px; align-items:center">
+          <div class="rate-val">17.0610</div>
+          <div class="rate-change up">+0.67%</div>
+        </div>
+      </div>
+      <div class="rate-row">
+        <div class="rate-currency">
+          <div class="currency-flag">£</div>
+          <span>GBP / MDL</span>
+        </div>
+        <div style="display:flex; gap:14px; align-items:center">
+          <div class="rate-val">23.1330</div>
+          <div class="rate-change down">-0.12%</div>
+        </div>
+      </div>
+      <div class="rate-row">
+        <div class="rate-currency">
+          <div class="currency-flag">₴</div>
+          <span>UAH / MDL</span>
+        </div>
+        <div style="display:flex; gap:14px; align-items:center">
+          <div class="rate-val">0.3922</div>
+          <div class="rate-change up">+0.05%</div>
+        </div>
+      </div>
+    </div>
+    <div class="card-chart">
+      <div class="chart-label">Evoluție EUR/MDL — 7 zile</div>
+      <div class="mini-chart">
+        <div class="chart-bar" style="height:55%"></div>
+        <div class="chart-bar" style="height:62%"></div>
+        <div class="chart-bar" style="height:58%"></div>
+        <div class="chart-bar" style="height:70%"></div>
+        <div class="chart-bar" style="height:65%"></div>
+        <div class="chart-bar" style="height:80%"></div>
+        <div class="chart-bar highlight" style="height:90%"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FEATURES -->
+<section id="despre" class="fade-in">
+  <div class="section-label">Funcționalități principale</div>
+  <div class="section-title">Tot ce ai nevoie despre<br>sistemul bancar din Moldova</div>
+  <p class="section-desc">Aplicația AI Bank agregează și analizează automat datele publice de la BNM.md, oferind vizualizări clare și analize inteligente.</p>
+
+  <div class="features-grid">
+    <a href="https://ai-bank.streamlit.app" target="_blank" class="feature-card" id="curs-valutar">
+      <div class="feature-icon">💱</div>
+      <div class="feature-title">Curs valutar</div>
+      <div class="feature-desc">Cursurile oficiale BNM pentru EUR, USD, GBP, RON, UAH și alte valute, actualizate zilnic cu grafice de evoluție.</div>
+      <span class="feature-tag tag-teal">Date live BNM</span>
+    </a>
+
+    <a href="https://ai-bank.streamlit.app" target="_blank" class="feature-card" id="capital-bancar">
+      <div class="feature-icon">🏦</div>
+      <div class="feature-title">Capital bancar</div>
+      <div class="feature-desc">Analiza capitalului propriu, activelor totale și indicatorilor de solvabilitate pentru toate băncile comerciale din Moldova.</div>
+      <span class="feature-tag tag-blue">Analiză AI</span>
+    </a>
+
+    <a href="https://ai-bank.streamlit.app" target="_blank" class="feature-card" id="comunicate">
+      <div class="feature-icon">📋</div>
+      <div class="feature-title">Comunicate BNM</div>
+      <div class="feature-desc">Toate comunicatele oficiale ale Băncii Naționale a Moldovei, organizate cronologic și rezumate automat cu AI.</div>
+      <span class="feature-tag tag-gold">Rezumate AI</span>
+    </a>
+
+    <a href="https://ai-bank.streamlit.app" target="_blank" class="feature-card" id="noutati">
+      <div class="feature-icon">📰</div>
+      <div class="feature-title">Noutăți bancare</div>
+      <div class="feature-desc">Știri și noutăți din sectorul bancar moldovean, agregate și clasificate automat pe categorii relevante.</div>
+      <span class="feature-tag tag-blue">Actualizat zilnic</span>
+    </a>
+
+    <a href="https://ai-bank.streamlit.app" target="_blank" class="feature-card" id="asigurari">
+      <div class="feature-icon">🛡️</div>
+      <div class="feature-title">Asigurări</div>
+      <div class="feature-desc">Date despre piața de asigurări din Republica Moldova — companii, produse, tarife RCA și indicatori de solvabilitate.</div>
+      <span class="feature-tag tag-teal">CNPF Moldova</span>
+    </a>
+
+    <a href="https://ai-bank.streamlit.app" target="_blank" class="feature-card" id="altele">
+      <div class="feature-icon">📊</div>
+      <div class="feature-title">Altele</div>
+      <div class="feature-desc">Indicatori macroeconomici, rata inflației, rezerve valutare, datoria externă și alte statistici financiare naționale.</div>
+      <span class="feature-tag tag-gold">Macro Moldova</span>
+    </a>
+  </div>
+</section>
+
+<!-- BANKS -->
+<div class="banks-section" id="banci">
+  <div class="banks-inner">
+    <div class="section-label">Bănci supravegheate de BNM</div>
+    <div class="section-title" style="margin-bottom:0">Toate cele 10 bănci comerciale din Moldova</div>
+    <div class="banks-grid fade-in">
+      <a href="https://ai-bank.streamlit.app" target="_blank" class="bank-chip">
+        <span class="bank-abbr">maib</span>
+        Moldova Agroindbank
+      </a>
+      <a href="https://ai-bank.streamlit.app" target="_blank" class="bank-chip">
+        <span class="bank-abbr">MICB</span>
+        Moldindconbank
+      </a>
+      <a href="https://ai-bank.streamlit.app" target="_blank" class="bank-chip">
+        <span class="bank-abbr">OTP</span>
+        OTP Bank Moldova
+      </a>
+      <a href="https://ai-bank.streamlit.app" target="_blank" class="bank-chip">
+        <span class="bank-abbr">VB</span>
+        Victoriabank
+      </a>
+      <a href="https://ai-bank.streamlit.app" target="_blank" class="bank-chip">
+        <span class="bank-abbr">EXB</span>
+        Eximbank
+      </a>
+      <a href="https://ai-bank.streamlit.app" target="_blank" class="bank-chip">
+        <span class="bank-abbr">FCB</span>
+        FinComBank
+      </a>
+      <a href="https://ai-bank.streamlit.app" target="_blank" class="bank-chip">
+        <span class="bank-abbr">ENB</span>
+        Energbank
+      </a>
+      <a href="https://ai-bank.streamlit.app" target="_blank" class="bank-chip">
+        <span class="bank-abbr">ECB</span>
+        EuroCreditBank
+      </a>
+      <a href="https://ai-bank.streamlit.app" target="_blank" class="bank-chip">
+        <span class="bank-abbr">PCB</span>
+        ProCredit Bank
+      </a>
+      <a href="https://ai-bank.streamlit.app" target="_blank" class="bank-chip">
+        <span class="bank-abbr">CTB</span>
+        Comerțbank
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- DATA PREVIEW -->
+<section class="fade-in">
+  <div class="section-label">Preview date</div>
+  <div class="section-title">Statistici bancare în timp real</div>
+  <p class="section-desc">Exemple de date disponibile în aplicație, preluate automat de la BNM.md</p>
+
+  <div class="data-grid">
+    <div class="data-card">
+      <div class="data-card-header">
+        <div class="data-card-title">Capital bancar — sistem</div>
+        <div class="live-badge">Live</div>
+      </div>
+      <div class="data-card-body">
+        <div class="data-row">
+          <span class="data-key">Active totale sector</span>
+          <span class="data-val blue">~147 mld. MDL</span>
+        </div>
+        <div class="data-row">
+          <span class="data-key">Capital propriu total</span>
+          <span class="data-val teal">~22 mld. MDL</span>
+        </div>
+        <div class="data-row">
+          <span class="data-key">Rata solvabilității</span>
+          <span class="data-val teal">24.8%</span>
+        </div>
+        <div class="data-row">
+          <span class="data-key">Rata lichidității</span>
+          <span class="data-val blue">51.3%</span>
+        </div>
+        <div class="data-row">
+          <span class="data-key">Credite neperformante</span>
+          <span class="data-val gold">6.2%</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="data-card">
+      <div class="data-card-header">
+        <div class="data-card-title">Rezerve & Politică monetară</div>
+        <div class="live-badge">BNM</div>
+      </div>
+      <div class="data-card-body">
+        <div class="data-row">
+          <span class="data-key">Rezerve valutare oficiale</span>
+          <span class="data-val blue">5.266 mld. EUR</span>
+        </div>
+        <div class="data-row">
+          <span class="data-key">Rata de bază BNM</span>
+          <span class="data-val teal">5.00% anual</span>
+        </div>
+        <div class="data-row">
+          <span class="data-key">Rata inflației (feb 2026)</span>
+          <span class="data-val gold">5.06%</span>
+        </div>
+        <div class="data-row">
+          <span class="data-key">Rezerve obligatorii MDL</span>
+          <span class="data-val blue">18%</span>
+        </div>
+        <div class="data-row">
+          <span class="data-key">Rezerve obligatorii valută</span>
+          <span class="data-val blue">26%</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<div class="cta-section">
+  <div class="cta-box fade-in">
+    <div class="hero-eyebrow" style="display:inline-flex; margin-bottom:20px">Gratuit · Fără înregistrare</div>
+    <h2>Explorează datele bancare<br>din Moldova acum</h2>
+    <p>Accesează analiza completă AI Bank — curs valutar, capital bancar, comunicate BNM și mult mai mult. Totul într-o singură aplicație.</p>
+    <div class="cta-actions">
+      <a href="https://ai-bank.streamlit.app" target="_blank" class="btn-primary" style="font-size:15px; padding:14px 28px">
+        <svg viewBox="0 0 16 16" fill="none" width="16" height="16">
+          <path d="M8 2L14 8L8 14M14 8H2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        Deschide aplicația AI Bank
+      </a>
+      <a href="https://www.facebook.com/profile.php?id=61578650040970" target="_blank" class="btn-secondary" style="font-size:15px; padding:14px 28px">
+        Urmărește pe Facebook
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-left">
+      <div class="logo-mark" style="width:26px; height:26px; font-size:10px">AI</div>
+      <span>AI Bank Moldova · 2026</span>
+    </div>
+    <div class="footer-bnm">Date preluate live de la BNM.md — Banca Națională a Moldovei</div>
+    <div class="footer-links">
+      <a href="https://ai-bank.streamlit.app" target="_blank" class="footer-link">Aplicație</a>
+      <a href="https://www.facebook.com/profile.php?id=61578650040970" target="_blank" class="footer-link">Facebook</a>
+      <a href="https://www.bnm.md" target="_blank" class="footer-link">BNM.md</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Scroll animations
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+  // Active nav link on scroll
+  const sections = document.querySelectorAll('[id]');
+  const navLinks = document.querySelectorAll('.nav-link');
+
+  window.addEventListener('scroll', () => {
+    let current = '';
+    sections.forEach(section => {
+      const sectionTop = section.offsetTop - 80;
+      if (window.scrollY >= sectionTop) {
+        current = section.getAttribute('id');
+      }
+    });
+
+    navLinks.forEach(link => {
+      link.classList.remove('active');
+      if (link.getAttribute('href') === '#' + current) {
+        link.classList.add('active');
+      }
+    });
+  });
+</script>
+</body>
+</html>
